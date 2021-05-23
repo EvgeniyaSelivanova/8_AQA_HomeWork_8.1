@@ -1,7 +1,7 @@
 package ru.netology.test;
 
 import lombok.val;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import ru.netology.data.DataHelper;
 import ru.netology.page.LoginPage;
@@ -12,13 +12,8 @@ import static com.codeborne.selenide.Selenide.open;
 
 public class EnterTest {
 
-    @BeforeEach
-    void clearDataBase() throws SQLException {
-        DataHelper.clearAllInAuthCodes();
-    }
-
     @Test
-    void shouldCheckTheEnteringInSystem() throws SQLException {
+    void shouldCheckTheEnteringInSystem() {
         val loginPage = open("http://localhost:9999", LoginPage.class);
         val authInfo = DataHelper.getAuthInfo();
         val verificationPage = loginPage.validLogin(authInfo);
@@ -34,6 +29,11 @@ public class EnterTest {
             val AuthInfo = DataHelper.getIncorrectAuthInfo(i);
             loginPage.invalidLogin(AuthInfo, i);
         }
+    }
+
+    @AfterAll
+    static void clearDataBase() {
+        DataHelper.clearAllInAuthCodes();
     }
 
 }
